@@ -1,9 +1,22 @@
-import { useState } from "react";
+import {BrowserRouter, Routes, Route} from "react-router-dom"
+import Home from "./assets/pages/Home";
+import Profile from "./assets/pages/Profile";
+import About from "./assets/pages/About";
+import SignUp from "./assets/pages/SignUp";
+import SignIn from "./assets/pages/SignIn";
 
 export default function App() {
   return (
-    <div className="flex justify-center items-center w-[100vw] h-[100vh]">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />}/>
+      <Route path="/sign-in" element={<SignIn />}/>
+      <Route path="/sign-up" element={<SignUp />}/>
+      <Route path="/about" element={<About />}/>
+      <Route path="/profile" element={<Profile />}/>
+    </Routes>
+    </BrowserRouter>
+    </>
   );
 }
