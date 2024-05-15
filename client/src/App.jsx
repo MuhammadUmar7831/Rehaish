@@ -12,8 +12,15 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
-        <Header />
         <Routes>
+          <Route
+            path="/*"
+            element={<Header />}
+            // Render Header only if the route is not /sign-in or /sign-up
+            match={(route) =>
+              !["/sign-in", "/sign-up"].includes(route.pathname)
+            }
+          />
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
