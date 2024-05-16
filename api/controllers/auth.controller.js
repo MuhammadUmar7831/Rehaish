@@ -5,12 +5,17 @@ import jwt from "jsonwebtoken";
 
 export const signup = async (req, res, next) => {
   const { name, email, password } = req.body;
-  const salt = 10;
+  const salt = parseInt(process.env.SALT);
   const hashedPassword = bcryptjs.hashSync(password, salt);
   const newUser = new User({ name, email, password: hashedPassword });
   try {
     await newUser.save();
-    res.status(201).send({ newUser, success: false });
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+    const { password: pass, ...user } = newUser._doc;
+    res
+      .cookie("access token", token, { httpOnly: true })
+      .status(201)
+      .send({ user, success: false });
   } catch (error) {
     if (error.code === 11000) {
       next(errorHandler(400, "email already registered"));
@@ -28,8 +33,11 @@ export const signin = async (req, res, next) => {
     const validPassword = bcryptjs.compareSync(password, validUser.password);
     if (!validPassword) return next(errorHandler(401, "Wrong Credentials!"));
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-    const {password:pass, ...user} = validUser._doc;
-    res.cookie("access token", token, { httpOnly: true }).status(201).send(user);
+    const { password: pass, ...user } = validUser._doc;
+    res
+      .cookie("access token", token, { httpOnly: true })
+      .status(201)
+      .send(user);
   } catch (error) {
     next(error);
   }
