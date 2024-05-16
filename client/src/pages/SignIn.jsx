@@ -5,6 +5,8 @@ import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import { FiUserPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { signInApi } from "../api/auth.api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/user.slice";
 
 export default function SignIn() {
   const {
@@ -20,6 +22,8 @@ export default function SignIn() {
     setError,
     togglePasswordVisibility,
   } = useSignin();
+
+  const dispatch = useDispatch();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -37,7 +41,6 @@ export default function SignIn() {
     };
     setLoading(true);
     const res = await signInApi(formData);
-    console.log(res);
     if (res.success === false) {
       setError(res.message);
     } else {
@@ -45,6 +48,7 @@ export default function SignIn() {
       // navigate("/");
     }
     setLoading(false);
+    dispatch(setUser(res));
   };
 
   return (
