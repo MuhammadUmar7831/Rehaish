@@ -9,8 +9,8 @@ import LoadingOverlay from "../interface/LoadingOverlay";
 
 export default function SignUp() {
   const {
-    username,
-    setUsername,
+    name,
+    setName,
     email,
     setEmail,
     password,
@@ -29,7 +29,7 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
-      username,
+      name,
       email,
       password,
     };
@@ -44,8 +44,8 @@ export default function SignUp() {
     setLoading(false);
   };
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleNameChange = (e) => {
+    setName(e.target.value);
   };
 
   const handleEmailChange = (e) => {
@@ -60,7 +60,6 @@ export default function SignUp() {
 
   return (
     <>
-      {/* Loading overlay */}
       {loading && <LoadingOverlay />}
 
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
@@ -82,16 +81,14 @@ export default function SignUp() {
                     Or sign Up with E-mail
                   </div>
                 </div>
-                {error && (
-                  <p className="text-red-600 text-center p-2">{error}</p>
-                )}
                 <form onSubmit={handleSubmit} className="mx-auto max-w-xs">
+                  {error && <p className="text-red-600 flex p-2">{error}</p>}
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="text"
-                    placeholder="Username"
-                    onChange={handleUsernameChange}
-                    autoComplete="username"
+                    placeholder="name"
+                    onChange={handleNameChange}
+                    autoComplete="name"
                     required
                   />
                   <input
@@ -99,6 +96,7 @@ export default function SignUp() {
                     type="email"
                     placeholder="Email"
                     onChange={handleEmailChange}
+                    autoComplete="email"
                     required
                   />
                   <div
