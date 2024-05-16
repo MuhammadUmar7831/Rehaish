@@ -35,8 +35,8 @@ export default function SignUp() {
     };
     setLoading(true);
     const res = await signUpApi(formData);
-    if (res.data.success === false) {
-      setError(res.data.message);
+    if (res.success === false) {
+      setError(res.message);
     } else {
       setError(false);
       // navigate("/");
