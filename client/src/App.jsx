@@ -22,7 +22,6 @@ export default function App() {
         dispatch(setUser(res.user));
       }
     };
-
     fetchData();
   }, [dispatch]);
 

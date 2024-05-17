@@ -1,5 +1,5 @@
 import { MdEdit } from "react-icons/md";
-import { RefreshCcw, Trash2 } from "react-feather";
+import { RefreshCcw, Trash2, LogOut } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import useProfile from "../hooks/profile.hooks";
 import { setUser } from "../redux/slices/user.slice";
@@ -116,10 +116,18 @@ export default function Profile() {
                 <RefreshCcw className="mr-2" color="white" />
                 <span className="text-white">Update</span>
               </button>
-              <button className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring focus:ring-red-400 flex items-center">
+              {/* <button className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring focus:ring-red-400 flex items-center">
                 <Trash2 className="mr-2" color="white" />
                 <span className="text-white">Delete</span>
               </button>
+              <button className="bg-orange-500 text-white px-6 py-3 rounded-md hover:bg-orange-600 transition duration-200 focus:outline-none focus:ring focus:ring-red-400 flex items-center">
+                <LogOut className="mr-2" color="white" />
+                <span className="text-white">Sign Out</span>
+              </button> */}
+            </div>
+            <div className="flex justify-end w-full p-2 my-2">
+              <Trash2 className="mx-2 cursor-pointer" color="red" />
+              <LogOut className="mx-2 cursor-pointer" color="orange" />
             </div>
             <div className="mt-8">
               <h2 className="font-medium text-gray-900 text-left">
