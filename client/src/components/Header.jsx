@@ -7,7 +7,7 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <header className="bg-slate-100 p-4">
+    <header className="bg-slate-200 p-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo*/}
         <Link to="/" className="text-lg font-bold">
@@ -27,7 +27,7 @@ export default function Header() {
           />
           <button
             type="button"
-            className="pl-3 flex items-center hover:cursor-pointer px-3 rounded-e-md bg-slate-200 hover:bg-slate-400"
+            className="pl-3 flex items-center hover:cursor-pointer px-3 rounded-e-md bg-slate-400 hover:bg-slate-500"
           >
             <RiSearchLine className="text-gray-500" />
           </button>
