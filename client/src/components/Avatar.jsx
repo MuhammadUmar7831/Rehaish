@@ -47,20 +47,23 @@ const Avatar = () => {
           <Link
             to="/profile"
             className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+            onClick={toggleMenu}
           >
             Profile
           </Link>
           <Link
             to="/sign-in"
             className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+            onClick={toggleMenu}
           >
             Sign In
           </Link>
           <Link
-            to="/sign-out"
+            to="/sign-up"
             className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+            onClick={toggleMenu}
           >
-            Sign Out
+            Sign Up
           </Link>
         </div>
       )}
