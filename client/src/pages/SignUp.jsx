@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import { FiUserPlus } from "react-icons/fi";
-import signupHooks from "../hooks/signup.hooks";
+import useSignup from "../hooks/signup.hooks";
 import LoadingOverlay from "../interface/LoadingOverlay";
 import GoogleAuth from "../components/Google.Auth";
 import { googleOAuthApi } from "../api/googleOAuth.api";
@@ -12,6 +12,7 @@ import {
 } from "../utils/signup.utils";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/user.slice";
+import { signWithGoogleOAuth } from "../api/auth.api";
 
 export default function SignUp() {
   const {
@@ -30,10 +31,10 @@ export default function SignUp() {
     setLoading,
     error,
     setError,
-    navigate,
     togglePasswordVisibility,
-  } = signupHooks();
+  } = useSignup();
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -42,7 +43,7 @@ export default function SignUp() {
       name: name,
       email: email,
       password: password,
-      avatar: avatar
+      avatar: avatar,
     };
     setLoading(true);
     const res = await singUp(formData);
@@ -50,14 +51,13 @@ export default function SignUp() {
       setError(res.message);
     } else {
       setError(false);
-      // navigate("/");
+      navigate("/");
     }
-    setLoading(false);
     dispatch(setUser(res.user));
+    setLoading(false);
   };
 
-  const handleGoogleClick = async (e) => {
-    e.preventDefault();
+  const handleGoogleClick = async () => {
     setLoading(true);
     var res = await googleOAuthApi();
     if (res.success === false) {
@@ -67,22 +67,22 @@ export default function SignUp() {
     }
     await setName(res.data.user.displayName);
     await setEmail(res.data.user.email);
-    await setPassword(generateStrongPassword());
     await setAvatar(res.data.user.photoURL);
 
-    // const formData = {
-    //   name: res.data.user.displayName,
-    //   email: res.data.user.email,
-    //   password: generateStrongPassword(),
-    // };
+    const formData = {
+      name: res.data.user.displayName,
+      email: res.data.user.email,
+      avatar: res.data.user.photoURL,
+    };
 
-    // var res = await singUp(formData);
-    // if (res.success === false) {
-    //   setError(res.message);
-    // } else {
-    //   setError(false);
-    //   // navigate("/");
-    // }
+    var res = await signWithGoogleOAuth(formData);
+    if (res.success === false) {
+      setError(res.message);
+    } else {
+      setError(false);
+      navigate("/");
+    }
+    dispatch(setUser(res));
     setLoading(false);
   };
 

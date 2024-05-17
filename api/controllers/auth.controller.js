@@ -2,6 +2,7 @@ import { errorHandler } from "../errors/error.js";
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { generateStrongPassword } from "../utils/auth.utils.js";
 
 export const signup = async (req, res, next) => {
   const { name, email, password, avatar } = req.body;
@@ -38,6 +39,37 @@ export const signin = async (req, res, next) => {
       .cookie("access token", token, { httpOnly: true })
       .status(201)
       .send(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const googleOAuth = async (req, res, next) => {
+  const { name, email, avatar } = req.body;
+  const user = await User.findOne({ email });
+  try {
+    if (!user) {
+      // singup with googleOAuth
+      const password = generateStrongPassword();
+      const salt = parseInt(process.env.SALT);
+      const hashedPassword = bcryptjs.hashSync(password, salt);
+      const newUser = new User({ name, email, password: hashedPassword, avatar });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const { password: pass, ...userWithoutPassword } = newUser._doc;
+      res
+        .cookie("access token", token, { httpOnly: true })
+        .status(201)
+        .send(userWithoutPassword);
+    } else {
+      // singin with googleOAuth
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const { password: pass, ...userWithoutPassword } = user._doc;
+      res
+        .cookie("access token", token, { httpOnly: true })
+        .status(201)
+        .send(userWithoutPassword);
+    }
   } catch (error) {
     next(error);
   }

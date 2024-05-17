@@ -1,12 +1,13 @@
-import { FcGoogle } from "react-icons/fc";
 import useSignin from "../hooks/signin.hooks";
 import LoadingOverlay from "../interface/LoadingOverlay";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import { FiUserPlus } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import { signInApi } from "../api/auth.api";
+import { Link, useNavigate } from "react-router-dom";
+import { signInApi, signWithGoogleOAuth } from "../api/auth.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/user.slice";
+import { googleOAuthApi } from "../api/googleOAuth.api";
+import GoogleAuth from "../components/Google.Auth";
 
 export default function SignIn() {
   const {
@@ -15,7 +16,7 @@ export default function SignIn() {
     password,
     setPassword,
     showPassword,
-    setShowPassword,
+    setAvatar,
     loading,
     setLoading,
     error,
@@ -23,7 +24,36 @@ export default function SignIn() {
     togglePasswordVisibility,
   } = useSignin();
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleGoogleClick = async () => {
+    setLoading(true);
+    var res = await googleOAuthApi();
+    if (res.success === false) {
+      setError(res.message);
+      setLoading(false);
+      return;
+    }
+    await setEmail(res.data.user.email);
+    await setAvatar(res.data.user.photoURL);
+
+    const formData = {
+      name: res.data.user.displayName,
+      email: res.data.user.email,
+      avatar: res.data.user.photoURL,
+    };
+
+    var res = await signWithGoogleOAuth(formData);
+    if (res.success === false) {
+      setError(res.message);
+    } else {
+      setError(false);
+      navigate("/");
+    }
+    dispatch(setUser(res));
+    setLoading(false);
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -45,7 +75,7 @@ export default function SignIn() {
       setError(res.message);
     } else {
       setError(false);
-      // navigate("/");
+      navigate("/");
     }
     setLoading(false);
     dispatch(setUser(res));
@@ -61,12 +91,7 @@ export default function SignIn() {
             <div className="mt-12 flex flex-col items-center">
               <div className="w-full flex-1 mt-8">
                 <div className="flex flex-col items-center">
-                  <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-green-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
-                    <div className="bg-white p-2 rounded-full">
-                      <FcGoogle />
-                    </div>
-                    <span className="ml-4">Sign In with Google</span>
-                  </button>
+                  <GoogleAuth handleGoogleClick={handleGoogleClick} />
                 </div>
 
                 <div className="my-12 border-b text-center">
@@ -75,9 +100,7 @@ export default function SignIn() {
                   </div>
                 </div>
                 <form onSubmit={handleSubmit} className="mx-auto max-w-xs">
-                {error && (
-                <p className="text-red-600 p-2 flex">{error}</p>
-                )}
+                  {error && <p className="text-red-600 p-2 flex">{error}</p>}
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="email"

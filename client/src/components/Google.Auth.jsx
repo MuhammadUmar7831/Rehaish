@@ -12,7 +12,7 @@ export default function GoogleAuth(props) {
         <div className="bg-white p-2 rounded-full">
           <FcGoogle />
         </div>
-        <span className="ml-4">Sign Up with Google</span>
+        <span className="ml-4">Continue with Google</span>
       </button>
     </>
   );

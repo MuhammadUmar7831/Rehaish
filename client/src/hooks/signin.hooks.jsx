@@ -4,6 +4,7 @@ export default function useSignin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [avatar, setAvatar] = useState('/images/male.jpg')
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -16,6 +17,8 @@ export default function useSignin() {
     setEmail,
     password,
     setPassword,
+    avatar,
+    setAvatar,
     showPassword,
     setShowPassword,
     loading,

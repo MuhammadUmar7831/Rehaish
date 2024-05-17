@@ -8,8 +8,24 @@ import Header from "./components/Header";
 
 import "./App.css";
 import PrivateRoute from "./components/PrivateRoute";
+import { useEffect } from "react";
+import { getUserApi } from "./api/user.api";
+import { useDispatch } from "react-redux";
+import { setUser } from "./redux/slices/user.slice";
 
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getUserApi();
+      if (res.success === true) {
+        dispatch(setUser(res.user));
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
   return (
     <>
       <BrowserRouter>
