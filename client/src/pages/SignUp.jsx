@@ -18,6 +18,8 @@ export default function SignUp() {
     email,
     setEmail,
     password,
+    avatar,
+    setAvatar,
     setPassword,
     passwordStrength,
     setPasswordStrength,
@@ -36,6 +38,7 @@ export default function SignUp() {
       name: name,
       email: email,
       password: password,
+      avatar: avatar
     };
     setLoading(true);
     const res = await singUp(formData);
@@ -60,6 +63,7 @@ export default function SignUp() {
     await setName(res.data.user.displayName);
     await setEmail(res.data.user.email);
     await setPassword(generateStrongPassword());
+    await setAvatar(res.data.user.photoURL);
 
     // const formData = {
     //   name: res.data.user.displayName,

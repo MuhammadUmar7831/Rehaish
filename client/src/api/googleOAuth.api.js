@@ -2,14 +2,14 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../firebase/OAuthApi";
 
 export const googleOAuthApi = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const auth = getAuth(app);
+  try {
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth(app);
 
-      const result = await signInWithPopup(auth, provider);
-
-      return {success: true, data: result};
-    } catch (error) {
-      return {success: false, message: `could not sigin with google ${error}`};
-    }
-  };
+    const result = await signInWithPopup(auth, provider);
+    console.log(result);
+    return { success: true, data: result };
+  } catch (error) {
+    return { success: false, message: `could not sigin with google` };
+  }
+};

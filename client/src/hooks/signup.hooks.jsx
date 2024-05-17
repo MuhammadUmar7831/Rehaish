@@ -4,6 +4,7 @@ export default function useSignup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState("/images/male.jpg");
   const [passwordStrength, setPasswordStrength] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,8 @@ export default function useSignup() {
     email,
     setEmail,
     password,
+    avatar,
+    setAvatar,
     setPassword,
     passwordStrength,
     setPasswordStrength,
