@@ -26,6 +26,7 @@ export default function Profile() {
     handleNameBlur,
     handleNameInputChange,
     handleFileUpload,
+    handleUpdate
   } = useProfile();
 
   const dispatch = useDispatch();
@@ -36,24 +37,7 @@ export default function Profile() {
     }
   };
 
-  const handleUpdate = async () => {
-    dispatch(setLoading(true));
-    if (imageFile) {
-      await handleFileUpload(imageFile);
-    }
-    const formData = {
-      name: newName,
-      avatar: imageUrl,
-    };
-    const res = await updateUserApi(formData);
-
-    dispatch(setLoading(false));
-    if (res.success === false) {
-      setError(res.message);
-      return;
-    }
-    dispatch(setUser(res.user));
-  };
+  
 
   return (
     <>
@@ -85,8 +69,8 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            <div className="mt-8 text-center">
-              {/* <p className="text-red-500">{error}</p> */}
+            <div className="mt-8 text-lg text-center">
+              {error && <p className="text-red-500">update failed!</p>}
               {editingName ? (
                 <input
                   type="text"
@@ -116,16 +100,8 @@ export default function Profile() {
                 <RefreshCcw className="mr-2" color="white" />
                 <span className="text-white">Update</span>
               </button>
-              {/* <button className="bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition duration-200 focus:outline-none focus:ring focus:ring-red-400 flex items-center">
-                <Trash2 className="mr-2" color="white" />
-                <span className="text-white">Delete</span>
-              </button>
-              <button className="bg-orange-500 text-white px-6 py-3 rounded-md hover:bg-orange-600 transition duration-200 focus:outline-none focus:ring focus:ring-red-400 flex items-center">
-                <LogOut className="mr-2" color="white" />
-                <span className="text-white">Sign Out</span>
-              </button> */}
             </div>
-            <div className="flex justify-end w-full p-2 my-2">
+            <div className="flex justify-end w-full p-2 my-4">
               <Trash2 className="mx-2 cursor-pointer" color="red" />
               <LogOut className="mx-2 cursor-pointer" color="orange" />
             </div>

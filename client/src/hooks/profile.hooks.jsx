@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { app } from "../firebase/OAuthApi";
 import {
   getDownloadURL,
@@ -7,6 +7,9 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import { updateUserApi } from "../api/user.api";
+import { setLoading } from "../redux/slices/loading.slice";
+import { setUser } from "../redux/slices/user.slice";
 
 export default function useProfile() {
   const { user } = useSelector((state) => state.user);
@@ -16,6 +19,8 @@ export default function useProfile() {
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState(user.name);
   const [error, setError] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (imageFile) {
@@ -36,25 +41,45 @@ export default function useProfile() {
     setNewName(e.target.value);
   };
 
-  const handleFileUpload = (file) => {
+  const handleFileUpload = async (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, "avatar/" + fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      null,
-      (error) => {
-        setError(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageUrl(downloadURL);
-          setImageFile(null);
-        });
-      }
-    );
+    try {
+      await uploadTask;
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+      await setImageUrl(downloadURL);
+      setImageFile(null);
+      setError(false);
+      return downloadURL; // Return true if upload is successful
+    } catch (error) {
+      setError(true);
+      setImageUrl(user.avatar);
+      return false; // Return false if there's an error
+    }
+  };
+
+  const handleUpdate = async () => {
+    dispatch(setLoading(true));
+    var uploadRes = false;
+    if (imageFile) {
+      uploadRes = await handleFileUpload(imageFile);
+    }
+    const img = uploadRes === false ? user.avatar : uploadRes;
+    const formData = {
+      name: newName,
+      avatar: img,
+    };
+    const res = await updateUserApi(formData);
+
+    dispatch(setLoading(false));
+    if (res.success === false) {
+      setError(res.message);
+      return;
+    }
+    dispatch(setUser(res.user));
   };
 
   return {
@@ -72,5 +97,6 @@ export default function useProfile() {
     handleNameBlur,
     handleNameInputChange,
     handleFileUpload,
+    handleUpdate
   };
 }
