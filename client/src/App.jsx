@@ -4,7 +4,7 @@ import Profile from "./pages/Profile";
 import About from "./pages/About";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import Header from "./pages/Header";
+import Header from "./components/Header";
 
 import "./App.css";
 

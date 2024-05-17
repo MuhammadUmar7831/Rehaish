@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
-import { FcGoogle } from "react-icons/fc";
 import { FiUserPlus } from "react-icons/fi";
-import { checkPasswordStrength } from "../utils/signup.utils";
 import signupHooks from "../hooks/signup.hooks";
-import { signUpApi } from "../api/auth.api";
 import LoadingOverlay from "../interface/LoadingOverlay";
+import GoogleAuth from "../components/Google.Auth";
+import { googleOAuthApi } from "../api/googleOAuth.api";
+import {
+  checkPasswordStrength,
+  generateStrongPassword,
+  singUp,
+} from "../utils/signup.utils";
 
 export default function SignUp() {
   const {
@@ -29,18 +33,47 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
-      name,
-      email,
-      password,
+      name: name,
+      email: email,
+      password: password,
     };
     setLoading(true);
-    const res = await signUpApi(formData);
+    const res = await singUp(formData);
     if (res.success === false) {
       setError(res.message);
     } else {
       setError(false);
       // navigate("/");
     }
+    setLoading(false);
+  };
+
+  const handleGoogleClick = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    var res = await googleOAuthApi();
+    if (res.success === false) {
+      setError(res.message);
+      setLoading(false);
+      return;
+    }
+    await setName(res.data.user.displayName);
+    await setEmail(res.data.user.email);
+    await setPassword(generateStrongPassword());
+
+    // const formData = {
+    //   name: res.data.user.displayName,
+    //   email: res.data.user.email,
+    //   password: generateStrongPassword(),
+    // };
+
+    // var res = await singUp(formData);
+    // if (res.success === false) {
+    //   setError(res.message);
+    // } else {
+    //   setError(false);
+    //   // navigate("/");
+    // }
     setLoading(false);
   };
 
@@ -68,12 +101,7 @@ export default function SignUp() {
             <div className="mt-12 flex flex-col items-center">
               <div className="w-full flex-1 mt-8">
                 <div className="flex flex-col items-center">
-                  <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-green-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
-                    <div className="bg-white p-2 rounded-full">
-                      <FcGoogle />
-                    </div>
-                    <span className="ml-4">Sign Up with Google</span>
-                  </button>
+                  <GoogleAuth handleGoogleClick={handleGoogleClick} />
                 </div>
 
                 <div className="my-12 border-b text-center">
@@ -81,12 +109,18 @@ export default function SignUp() {
                     Or sign Up with E-mail
                   </div>
                 </div>
-                <form onSubmit={handleSubmit} className="mx-auto max-w-xs">
+                <form
+                  onSubmit={handleSubmit}
+                  id="signupForm"
+                  className="mx-auto max-w-xs"
+                  autoComplete="on"
+                >
                   {error && <p className="text-red-600 flex p-2">{error}</p>}
                   <input
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                     type="text"
                     placeholder="name"
+                    value={name}
                     onChange={handleNameChange}
                     autoComplete="name"
                     required
@@ -95,6 +129,8 @@ export default function SignUp() {
                     className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                     type="email"
                     placeholder="Email"
+                    name="email"
+                    value={email}
                     onChange={handleEmailChange}
                     autoComplete="email"
                     required
@@ -110,6 +146,8 @@ export default function SignUp() {
                       className="w-full px-8 py-4 rounded-s-lg font-medium bg-gray-100 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
+                      value={password}
+                      name="password"
                       onChange={handlePasswordChange}
                       maxLength="20"
                       minLength={8}
@@ -147,6 +185,7 @@ export default function SignUp() {
                   </div>
                   <button
                     type="submit"
+                    id="signUpSubmitBtn"
                     className="mt-5 tracking-wide font-semibold bg-green-400 text-white-500 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                   >
                     <FiUserPlus className="w-7 h-7" />
