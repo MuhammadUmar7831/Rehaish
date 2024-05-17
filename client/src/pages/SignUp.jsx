@@ -53,7 +53,7 @@ export default function SignUp() {
       // navigate("/");
     }
     setLoading(false);
-    dispatch(setUser(res));
+    dispatch(setUser(res.user));
   };
 
   const handleGoogleClick = async (e) => {
