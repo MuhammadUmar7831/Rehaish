@@ -16,7 +16,7 @@ export const signup = async (req, res, next) => {
     res
       .cookie("access token", token, { httpOnly: true })
       .status(201)
-      .send({ user, success: false });
+      .send({ user, success: true });
   } catch (error) {
     if (error.code === 11000) {
       next(errorHandler(400, "email already registered"));
