@@ -7,7 +7,6 @@ export const googleOAuthApi = async () => {
     const auth = getAuth(app);
 
     const result = await signInWithPopup(auth, provider);
-    console.log(result);
     return { success: true, data: result };
   } catch (error) {
     return { success: false, message: `could not sigin with google` };
