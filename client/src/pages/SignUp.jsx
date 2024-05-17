@@ -10,6 +10,8 @@ import {
   generateStrongPassword,
   singUp,
 } from "../utils/signup.utils";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/user.slice";
 
 export default function SignUp() {
   const {
@@ -32,6 +34,8 @@ export default function SignUp() {
     togglePasswordVisibility,
   } = signupHooks();
 
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
@@ -49,6 +53,7 @@ export default function SignUp() {
       // navigate("/");
     }
     setLoading(false);
+    dispatch(setUser(res));
   };
 
   const handleGoogleClick = async (e) => {
