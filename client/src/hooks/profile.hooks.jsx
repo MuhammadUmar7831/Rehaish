@@ -19,6 +19,7 @@ export default function useProfile() {
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState(user.name);
   const [error, setError] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -82,6 +83,8 @@ export default function useProfile() {
     dispatch(setUser(res.user));
   };
 
+  const deleteUser = ()=>{}
+
   return {
     fileRef,
     imageFile,
@@ -97,6 +100,9 @@ export default function useProfile() {
     handleNameBlur,
     handleNameInputChange,
     handleFileUpload,
-    handleUpdate
+    handleUpdate,
+    deleteModalOpen,
+    setDeleteModalOpen,
+    deleteUser
   };
 }
