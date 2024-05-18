@@ -10,6 +10,7 @@ import {
 import { deleteUserApi, updateUserApi } from "../api/user.api";
 import { setLoading } from "../redux/slices/loading.slice";
 import { setUser } from "../redux/slices/user.slice";
+import { signOutApi } from "../api/auth.api";
 
 export default function useProfile() {
   const { user } = useSelector((state) => state.user);
@@ -20,6 +21,7 @@ export default function useProfile() {
   const [newName, setNewName] = useState(user.name);
   const [error, setError] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [signoutModalOpen, setSignoutModalOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -83,18 +85,29 @@ export default function useProfile() {
     dispatch(setUser(res.user));
   };
 
-  const deleteUser = async ()=>{
+  const deleteUser = async () => {
     dispatch(setLoading(true));
     const res = await deleteUserApi();
     dispatch(setLoading(false));
 
-    if (res.success === false){
+    if (res.success === false) {
       setError(res.message);
       return;
     }
     dispatch(setUser(null));
+  };
 
-  }
+  const signout = async () => {
+    dispatch(setLoading(true));
+    const res = await signOutApi();
+    dispatch(setLoading(false));
+
+    if (res.success === false) {
+      setError(res.message);
+      return;
+    }
+    dispatch(setUser(null));
+  };
 
   return {
     fileRef,
@@ -114,6 +127,9 @@ export default function useProfile() {
     handleUpdate,
     deleteModalOpen,
     setDeleteModalOpen,
-    deleteUser
+    deleteUser,
+    signoutModalOpen,
+    setSignoutModalOpen,
+    signout,
   };
 }

@@ -1,6 +1,6 @@
 import { MdEdit } from "react-icons/md";
 import { RefreshCcw, Trash2, LogOut } from "react-feather";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import useProfile from "../hooks/profile.hooks";
 import LoadingOverlay from "../interface/LoadingOverlay";
 import PopupModal from "../interface/PopupModal";
@@ -11,7 +11,6 @@ export default function Profile() {
 
   const {
     fileRef,
-    imageFile,
     setImageFile,
     imageUrl,
     editingName,
@@ -23,10 +22,11 @@ export default function Profile() {
     handleUpdate,
     deleteModalOpen,
     setDeleteModalOpen,
-    deleteUser
+    deleteUser,
+    signoutModalOpen,
+    setSignoutModalOpen,
+    signout,
   } = useProfile();
-
-  const dispatch = useDispatch();
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -37,7 +37,30 @@ export default function Profile() {
   return (
     <>
       {loading && <LoadingOverlay />}
-      <PopupModal isOpen={deleteModalOpen} onConfirm={deleteUser} onClose={()=>{setDeleteModalOpen(false)}} onCancel={()=>{setDeleteModalOpen(false)}} message={"Are you sure you want to delete your account?"}/>
+      {/* modal for delete */}
+      <PopupModal
+        isOpen={deleteModalOpen}
+        onConfirm={deleteUser}
+        onClose={() => {
+          setDeleteModalOpen(false);
+        }}
+        onCancel={() => {
+          setDeleteModalOpen(false);
+        }}
+        message={"Are you sure you want to delete your account?"}
+      />
+      {/* modal for signout */}
+      <PopupModal
+        isOpen={signoutModalOpen}
+        onConfirm={signout}
+        onClose={() => {
+          setSignoutModalOpen(false);
+        }}
+        onCancel={() => {
+          setSignoutModalOpen(false);
+        }}
+        message={"Are you sure you want to signout?"}
+      />
       <div className="flex items-center justify-center">
         <div className="bg-gray-100 shadow-lg rounded-lg w-full max-w-3xl mx-10 my-10 relative">
           <div className="p-8">
@@ -66,7 +89,7 @@ export default function Profile() {
               </div>
             </div>
             <div className="mt-8 text-lg text-center">
-              {error && <p className="text-red-500">Failed! {" "} {error}</p>}
+              {error && <p className="text-red-500">Failed! {error}</p>}
               {editingName ? (
                 <input
                   type="text"
@@ -98,8 +121,16 @@ export default function Profile() {
               </button>
             </div>
             <div className="flex justify-end w-full p-2 my-4">
-              <Trash2 onClick={()=> setDeleteModalOpen(true)} className="mx-2 cursor-pointer" color="red" />
-              <LogOut className="mx-2 cursor-pointer" color="orange" />
+              <Trash2
+                onClick={() => setDeleteModalOpen(true)}
+                className="mx-2 cursor-pointer"
+                color="red"
+              />
+              <LogOut
+                onClick={() => setSignoutModalOpen(true)}
+                className="mx-2 cursor-pointer"
+                color="orange"
+              />
             </div>
             <div className="mt-8">
               <h2 className="font-medium text-gray-900 text-left">

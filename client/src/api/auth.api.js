@@ -38,3 +38,16 @@ export const signWithGoogleOAuth = async (formData) => {
     }
   }
 };
+
+export const signOutApi = async () => {
+  try {
+    const response = await axios.delete("/api/auth/signout");
+    return response.data;
+  } catch (error) {
+    if (error.response.data === "") {
+      return { success: false, message: "server is down" };
+    } else {
+      return error.response.data;
+    }
+  }
+};
