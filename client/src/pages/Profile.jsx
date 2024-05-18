@@ -66,7 +66,7 @@ export default function Profile() {
               </div>
             </div>
             <div className="mt-8 text-lg text-center">
-              {error && <p className="text-red-500">update failed!</p>}
+              {error && <p className="text-red-500">Failed! {" "} {error}</p>}
               {editingName ? (
                 <input
                   type="text"

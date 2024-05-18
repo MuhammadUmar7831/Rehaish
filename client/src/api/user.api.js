@@ -25,3 +25,16 @@ export const updateUserApi = async (formData) => {
     }
   }
 };
+
+export const deleteUserApi = async () => {
+  try {
+    const response = await axios.delete("/api/user/deleteUser");
+    return response.data;
+  } catch (error) {
+    if (error.response.data === "") {
+      return { success: false, message: "server is down" };
+    } else {
+      return error.response.data;
+    }
+  }
+};

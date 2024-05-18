@@ -7,7 +7,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { updateUserApi } from "../api/user.api";
+import { deleteUserApi, updateUserApi } from "../api/user.api";
 import { setLoading } from "../redux/slices/loading.slice";
 import { setUser } from "../redux/slices/user.slice";
 
@@ -54,11 +54,11 @@ export default function useProfile() {
       await setImageUrl(downloadURL);
       setImageFile(null);
       setError(false);
-      return downloadURL; // Return true if upload is successful
+      return downloadURL;
     } catch (error) {
-      setError(true);
+      setError(error.message);
       setImageUrl(user.avatar);
-      return false; // Return false if there's an error
+      return false;
     }
   };
 
@@ -83,7 +83,18 @@ export default function useProfile() {
     dispatch(setUser(res.user));
   };
 
-  const deleteUser = ()=>{}
+  const deleteUser = async ()=>{
+    dispatch(setLoading(true));
+    const res = await deleteUserApi();
+    dispatch(setLoading(false));
+
+    if (res.success === false){
+      setError(res.message);
+      return;
+    }
+    dispatch(setUser(null));
+
+  }
 
   return {
     fileRef,
