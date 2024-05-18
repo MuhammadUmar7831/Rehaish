@@ -1,9 +1,10 @@
 import { MdEdit } from "react-icons/md";
-import { RefreshCcw, Trash2, LogOut } from "react-feather";
+import { RefreshCcw, Trash2, LogOut, Plus } from "react-feather";
 import { useSelector } from "react-redux";
 import useProfile from "../hooks/profile.hooks";
 import LoadingOverlay from "../interface/LoadingOverlay";
 import PopupModal from "../interface/PopupModal";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const { user } = useSelector((state) => state.user);
@@ -119,6 +120,13 @@ export default function Profile() {
                 <RefreshCcw className="mr-2" color="white" />
                 <span className="text-white">Update</span>
               </button>
+              <Link
+                to={"/create-listing"}
+                className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
+              >
+                  <Plus className="mr-2" color="white" />
+                <span className="text-white">Create Listing</span>
+              </Link>
             </div>
             <div className="flex justify-end w-full p-2 my-4">
               <Trash2
