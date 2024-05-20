@@ -1,16 +1,7 @@
-import { useRef, useState } from "react";
-import { Upload, CheckSquare, DollarSign, Image, Plus } from "react-feather";
-import { app } from "../firebase/OAuthApi";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../redux/slices/loading.slice";
+import { Image, Plus } from "react-feather";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import LoadingOverlay from "../interface/LoadingOverlay";
-import { createListingApi } from "../api/createListing.api";
 import useCreateListing from "../hooks/createListing.hooks";
 
 export default function CreateListing() {
@@ -49,7 +40,7 @@ export default function CreateListing() {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {createSuccess && (
           <p className="text-green-500 text-center">
-            listing created successfully
+            <Link to={'/listing'} className="text-blue-500 hover:underline">listing</Link> created successfully
           </p>
         )}
         <form onSubmit={handleCreate}>
@@ -205,8 +196,8 @@ export default function CreateListing() {
                     type="number"
                     name="beds"
                     id="beds"
-                    defaultValue={0}
-                    min={0}
+                    defaultValue={1}
+                    min={1}
                     max={15}
                     onChange={(e) => {
                       setBeds(e.target.value);
@@ -223,8 +214,8 @@ export default function CreateListing() {
                     type="number"
                     name="baths"
                     id="baths"
-                    defaultValue={0}
-                    min={0}
+                    defaultValue={1}
+                    min={1}
                     max={15}
                     onChange={(e) => {
                       setBaths(e.target.value);
