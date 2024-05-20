@@ -46,21 +46,21 @@ const Avatar = () => {
         <div className="absolute z-10 right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
           <Link
             to="/profile"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+            className="block px-4 py-2 text-gray-800 hover:bg-slate-200 w-full text-left"
             onClick={toggleMenu}
           >
             Profile
           </Link>
           <Link
             to="/sign-in"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+            className="block px-4 py-2 text-gray-800 hover:bg-slate-200 w-full text-left"
             onClick={toggleMenu}
           >
             Sign In
           </Link>
           <Link
             to="/sign-up"
-            className="block px-4 py-2 text-gray-800 hover:bg-gray-200 w-full text-left"
+            className="block px-4 py-2 text-gray-800 hover:bg-slate-200 w-full text-left"
             onClick={toggleMenu}
           >
             Sign Up

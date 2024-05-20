@@ -85,8 +85,8 @@ export default function SignIn() {
     <>
       {loading && <LoadingOverlay />}
 
-      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-        <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1 overflow-hidden">
+      <div className="min-h-screen text-gray-900 flex justify-center">
+        <div className="max-w-screen-xl m-0 sm:m-10 bg-white border shadow-md sm:rounded-lg flex justify-center flex-1 overflow-hidden">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div className="mt-12 flex flex-col items-center">
               <div className="w-full flex-1 mt-8">

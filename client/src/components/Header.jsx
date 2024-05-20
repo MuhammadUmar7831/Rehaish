@@ -7,7 +7,7 @@ export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <header className="bg-slate-200 p-4">
+    <header className="bg-slate-100 shadow-md p-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo*/}
         <Link to="/" className="text-lg font-bold">
@@ -23,13 +23,13 @@ export default function Header() {
           <input
             type="text"
             placeholder="Search..."
-            className="w-full bg-slate-300 rounded-s-md py-2 px-3 md:px-10 lg:px-10 focus:outline-none"
+            className="w-full bg-slate-200 rounded-s-md py-2 px-3 md:px-10 lg:px-10 focus:outline-none"
           />
           <button
             type="button"
-            className="pl-3 flex items-center hover:cursor-pointer px-3 rounded-e-md bg-slate-400 hover:bg-slate-500"
+            className="pl-3 flex items-center hover:cursor-pointer px-3 rounded-e-md bg-slate-300 hover:bg-slate-400"
           >
-            <RiSearchLine className="text-gray-500" />
+            <RiSearchLine className="text-gray-400" />
           </button>
         </form>
 
