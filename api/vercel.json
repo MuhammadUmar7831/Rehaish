@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "index.js",
-      "use": "esmodules"
+      "use": "@now/node"
     }
   ],
   "routes": [
@@ -11,5 +11,6 @@
       "src": "/(.*)",
       "dest": "index.js"
     }
-  ]
+  ],
+  "target": "experimental-serverless-esm"
 }
