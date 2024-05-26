@@ -1,5 +1,5 @@
 import { MdEdit } from "react-icons/md";
-import { RefreshCcw, Trash2, LogOut, Plus } from "react-feather";
+import { RefreshCcw, Trash2, LogOut, Plus, List } from "react-feather";
 import { useSelector } from "react-redux";
 import useProfile from "../hooks/profile.hooks";
 import LoadingOverlay from "../interface/LoadingOverlay";
@@ -124,8 +124,15 @@ export default function Profile() {
                 to={"/create-listing"}
                 className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
               >
-                  <Plus className="mr-2" color="white" />
+                <Plus className="mr-2" color="white" />
                 <span className="text-white">Create Listing</span>
+              </Link>
+              <Link
+                to={"/listing"}
+                className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
+              >
+                <List className="mr-2" color="white" />
+                <span className="text-white">Listings</span>
               </Link>
             </div>
             <div className="flex justify-end w-full p-2 my-4">
