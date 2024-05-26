@@ -13,6 +13,7 @@ import { getUserApi } from "./api/user.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/user.slice";
 import CreateListing from "./pages/CreateListing";
+import Listings from "./pages/Listings";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="/listing" element={<Listings />}/>
             <Route path="/create-listing" element={<CreateListing />}/>
           </Route>
         </Routes>
