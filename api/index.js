@@ -6,8 +6,6 @@ import dotenv from "dotenv";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
-import path, { dirname } from "path";
-import { fileURLToPath } from 'url';
 dotenv.config();
 
 mongoose
@@ -33,17 +31,6 @@ app.listen(port, () => {
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/listing", listingRouter);
-
-const currentFilePath = fileURLToPath(import.meta.url);
-const currentDirPath = dirname(currentFilePath);
-const clientDistPath = path.join(currentDirPath, "../client/dist");
-app.get("*", function (_, res) {
-  res.sendFile(path.join(clientDistPath, "index.html"), function (err) {
-    if (err) {
-      res.status(500).send(err);
-    }
-  });
-});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
