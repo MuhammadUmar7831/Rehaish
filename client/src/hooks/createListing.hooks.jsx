@@ -49,7 +49,6 @@ export default function useCreateListing() {
 
   const handleRemoveFileButtonClick = async (index) => {
     const updatedFiles = removeFile(index, files);
-    console.log(fileInputRef.current.value);
     await setFiles(updatedFiles);
   };
 
@@ -60,22 +59,22 @@ export default function useCreateListing() {
     const isImages = await checkFilesType(Array.from(temp));
     if (!isImages) {
       fileInputRef.current.value = "";
-      setError("please choose image files");
+      setError("Please choose image files.");
       return;
     }
 
-    if (temp.length > 0 && temp.length < 7) {
-      await setFiles(Array.from(temp));
+    const selectedFiles = [...files, ...Array.from(temp)];
+    if (selectedFiles.length > 0 && selectedFiles.length < 7) {
+      setFiles(selectedFiles);
       setError(false);
     } else {
-      if (temp.length === 0) {
+      if (selectedFiles.length === 0) {
         fileInputRef.current.value = "";
-        setError("please choose at least one files");
-      } else if (temp.length > 6) {
+        setError("Please choose at least one file.");
+      } else if (selectedFiles.length > 6) {
         fileInputRef.current.value = "";
-        setError("please choose six or less files");
+        setError("Please choose six or fewer files.");
       }
-      setFiles([]);
     }
   };
 
@@ -109,12 +108,17 @@ export default function useCreateListing() {
   };
 
   const handleFileUpload = async () => {
-    const uploadPromises = files.map((file) => handleSingleFileUpload(file));
     try {
-      const urls = await Promise.all(uploadPromises);
+      const urls = [];
+      for (let i = 0; i < files.length; i++) {
+        const url = await handleSingleFileUpload(files[i]);
+        urls.push(url);
+      }
+
       if (urls.some((url) => url === null)) {
         return null;
       }
+
       return urls;
     } catch (error) {
       setError(error.message);
