@@ -80,12 +80,14 @@ function Listing() {
                   <span className="font-semibold">
                     {listing.offer && `Regular`} Price:
                   </span>{" "}
-                  {formatPrice(listing.regularPrice)}
+                  {formatPrice(listing.regularPrice)}{" "}
+                  {listing.type === "sell" ? "" : "/ month"}
                 </p>
                 {listing.offer && (
                   <p>
                     <span className="font-semibold">Discount Price:</span>{" "}
-                    {formatPrice(listing.discountPrice)}
+                    {formatPrice(listing.discountPrice)}{" "}
+                    {listing.type === "sell" ? "" : "/ month"}
                   </p>
                 )}
                 <p>
