@@ -61,7 +61,7 @@ function Listing() {
                 src={listing.imageUrls[0]}
                 alt={listing.name}
                 className="w-full h-48 object-cover"
-              /> 
+              />
               {listing.offer && (
                 <div class="absolute right-0 top-0 h-16 w-16">
                   <div class="absolute transform rotate-45 bg-green-600 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
@@ -82,8 +82,10 @@ function Listing() {
                   <span className="font-semibold">
                     {listing.offer && `Regular`} Price:
                   </span>{" "}
-                  {formatPrice(listing.regularPrice)}{" "}
-                  {listing.type === "sell" ? "" : "/ month"}
+                  <span className={listing.offer ? `line-through` : ``}>
+                    {formatPrice(listing.regularPrice)}{" "}
+                    {listing.type === "sell" ? "" : "/ month"}
+                  </span>
                 </p>
                 {listing.offer && (
                   <p>
