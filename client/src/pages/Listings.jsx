@@ -47,7 +47,7 @@ function Listing() {
   }, []);
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-2">
       {loading && <p className="text-center text-gray-600">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -61,11 +61,13 @@ function Listing() {
                 src={listing.imageUrls[0]}
                 alt={listing.name}
                 className="w-full h-48 object-cover"
-              />
+              /> 
               {listing.offer && (
-                <span className="absolute top-1 right-1 px-3 py-1 bg-red-500 hover:bg-red-400 text-white">
-                  Offer
-                </span>
+                <div class="absolute right-0 top-0 h-16 w-16">
+                  <div class="absolute transform rotate-45 bg-green-600 text-center text-white font-semibold py-1 right-[-35px] top-[32px] w-[170px]">
+                    Offer
+                  </div>
+                </div>
               )}
             </div>
             <div className="p-4">
