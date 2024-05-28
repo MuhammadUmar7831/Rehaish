@@ -6,6 +6,33 @@ function Listing() {
   const [error, setError] = useState("");
   const [listings, setListings] = useState([]);
 
+  function formatPrice(num, format) {
+    const formatterUrdu = new Intl.NumberFormat("ur-PK", {
+      style: "currency",
+      currency: "PKR",
+      currencyDisplay: "symbol",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+      notation: "compact",
+      compactDisplay: "long",
+    });
+
+    const formatterEnglish = new Intl.NumberFormat("en-PK", {
+      style: "currency",
+      currency: "PKR",
+      currencyDisplay: "symbol",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+      notation: "compact",
+      compactDisplay: "long",
+    });
+
+    const formattedUrdu = formatterUrdu.format(num);
+    const formattedEnglish = formatterEnglish.format(num);
+
+    return formattedEnglish + " (" + formattedUrdu + ")";
+  }
+
   useEffect(() => {
     axios
       .get("/api/listing/getUserListing")
@@ -50,13 +77,15 @@ function Listing() {
                   {listing.address}
                 </p>
                 <p>
-                  <span className="font-semibold">Regular Price:</span>{" "}
-                  {listing.regularPrice}
+                  <span className="font-semibold">
+                    {listing.offer && `Regular`} Price:
+                  </span>{" "}
+                  {formatPrice(listing.regularPrice)}
                 </p>
                 {listing.offer && (
                   <p>
                     <span className="font-semibold">Discount Price:</span>{" "}
-                    {listing.discountPrice}
+                    {formatPrice(listing.discountPrice)}
                   </p>
                 )}
                 <p>
