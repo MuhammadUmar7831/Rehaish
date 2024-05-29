@@ -111,27 +111,27 @@ export default function Profile() {
               )}
               <p className="text-sm text-gray-600">Email: {user.email}</p>
             </div>
-            <div className="flex justify-center mt-6 space-x-4">
+            <div className="flex flex-wrap justify-center mt-6 space-x-4">
               <button
                 type="button"
                 onClick={handleUpdate}
-                className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
+                className="bg-gray-900 text-white px-6 py-3 my-2 text-xs md:text-base rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
               >
-                <RefreshCcw className="mr-2" color="white" />
+                <RefreshCcw className="mr-2 w-5 md:w-6" color="white" />
                 <span className="text-white">Update</span>
               </button>
               <Link
                 to={"/create-listing"}
-                className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
+                className="bg-gray-900 text-white px-6 py-3 my-2 text-xs md:text-base rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
               >
-                <Plus className="mr-2" color="white" />
+                <Plus className="mr-2 w-5 md:w-6" color="white" />
                 <span className="text-white">Create Listing</span>
               </Link>
               <Link
                 to={"/listing"}
-                className="bg-gray-900 text-white px-6 py-3 rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
+                className="bg-gray-900 text-white px-6 py-3 my-2 text-xs md:text-base rounded-md hover:bg-black transition duration-200 focus:outline-none focus:ring focus:ring-gray-400 flex items-center"
               >
-                <List className="mr-2" color="white" />
+                <List className="mr-2 w-5 md:w-6" color="white" />
                 <span className="text-white">Listings</span>
               </Link>
             </div>
