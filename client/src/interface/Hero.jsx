@@ -12,7 +12,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-black opacity-40"></div>
       </div>
       <div className="relative z-10 container mx-auto text-center text-white">
-        <div className="text-left">
+        <div className="text-left p-2">
           <h1 className="text-gray-200 text-5xl font-bold mb-4">
             Find your next <span className="text-zinc-400">perfect</span>
             <br />

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
+import MenuOverlay from "./MenuOverlay";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -11,14 +12,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo*/}
         <Link to="/" className="text-lg font-bold">
-          Logo
+          Rehaish
         </Link>
 
         {/* Search bar*/}
         <form
-          className={`flex lg:w-1/4 ${
-            showMenu ? "hidden" : "block"
-          } px-4 relative`}
+          className={`hidden md:flex lg:w-1/4 px-4 relative`}
         >
           <input
             type="text"
@@ -41,13 +40,13 @@ export default function Header() {
           <Link to="/about" className="px-3 py-2 hover:bg-slate-300 rounded-md">
             About
           </Link>
-
           {/* Account icon */}
-            <Avatar />
+          <Avatar />
         </div>
 
         {/* Hamburger menu button for mobile */}
         <div className="flex lg:hidden">
+          <Avatar />
           <button onClick={() => setShowMenu(!showMenu)}>
             <svg
               className="w-6 h-6"
@@ -73,6 +72,13 @@ export default function Header() {
               )}
             </svg>
           </button>
+          {showMenu && (
+            <MenuOverlay
+              onClose={() => {
+                setShowMenu(!showMenu);
+              }}
+            />
+          )}
         </div>
       </div>
     </header>
