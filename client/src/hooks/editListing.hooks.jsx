@@ -11,22 +11,31 @@ import { setLoading } from "../redux/slices/loading.slice";
 import { createListingApi } from "../api/createListing.api";
 import { suffixFormater } from "../utils/listing.utils";
 
-export default function useCreateListing() {
+export default function useEditListing() {
+  const { selectedListing } = useSelector((state) => state.selectedListing);
+
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(false);
-  const [type, setType] = useState("rent");
-  const [offer, setOffer] = useState(false);
-  const [regularPrice, setRegularPrice] = useState(1000);
-  const [discountPrice, setDiscountPrice] = useState(1000);
-  const [furnished, setFurnished] = useState(false);
-  const [parkingSpot, setParkingSpot] = useState(false);
-  const [beds, setBeds] = useState(0);
-  const [baths, setBaths] = useState(0);
-  const [size, setSize] = useState(1);
-  const [sizeUnit, setSizeUnit] = useState("marla");
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [address, setAddress] = useState("");
+  const [type, setType] = useState(selectedListing.type);
+  const [offer, setOffer] = useState(selectedListing.offer);
+  const [regularPrice, setRegularPrice] = useState(
+    selectedListing.regularPrice
+  );
+  const [discountPrice, setDiscountPrice] = useState(
+    selectedListing.discountPrice
+  );
+  const [furnished, setFurnished] = useState(selectedListing.furnished);
+  const [parkingSpot, setParkingSpot] = useState(selectedListing.parkingSpot);
+  const [beds, setBeds] = useState(selectedListing.beds);
+  const [baths, setBaths] = useState(selectedListing.baths);
+  const [size, setSize] = useState(
+    parseInt(selectedListing.size.split(" ")[0])
+  );
+  const [sizeUnit, setSizeUnit] = useState(selectedListing.size.split(" ")[1]);
+  const [name, setName] = useState(selectedListing.name);
+  const [description, setDescription] = useState(selectedListing.description);
+  const [address, setAddress] = useState(selectedListing.address);
+  const [imageUrls, setImageUrls] = useState(selectedListing.imageUrls);
   const [createSuccess, setCreateSuccess] = useState(false);
 
   const [regularPriceWithSuffix, setRegularPriceWithSuffix] = useState(
@@ -37,7 +46,6 @@ export default function useCreateListing() {
   );
 
   const fileInputRef = useRef(null);
-  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const checkFilesType = (files) => {
@@ -72,16 +80,17 @@ export default function useCreateListing() {
     }
 
     const selectedFiles = [...files, ...Array.from(temp)];
-    if (selectedFiles.length > 0 && selectedFiles.length < 7) {
+    if (selectedFiles.length > 0 && selectedFiles.length < 6 - imageUrls.length) {
       setFiles(selectedFiles);
       setError(false);
     } else {
+      console.log(selectedFiles.length > 6 - imageUrls.length)
       if (selectedFiles.length === 0) {
         fileInputRef.current.value = "";
         setError("Please choose at least one file.");
-      } else if (selectedFiles.length > 6) {
+      } else if (selectedFiles.length > 6 - imageUrls.length) {
         fileInputRef.current.value = "";
-        setError("Please choose six or fewer files.");
+        setError(`Please choose ${6 - imageUrls.length} or fewer files.`);
       }
     }
   };
@@ -172,6 +181,8 @@ export default function useCreateListing() {
 
   const handleRegularPriceChange = (e) => {
     const val = e.target.value;
+    console.log("selected Listing", selectedListing);
+    console.log("imageUrls", imageUrls);
     setRegularPrice(val);
     setRegularPriceWithSuffix(suffixFormater(val));
   };
@@ -182,9 +193,32 @@ export default function useCreateListing() {
     setDiscountPriceWithSuffix(suffixFormater(val));
   };
 
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(imageUrls);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setImageUrls(items);
+  };
+
   return {
+    name,
+    description,
+    address,
+    size,
+    sizeUnit,
+    type,
+    parkingSpot,
+    furnished,
+    offer,
+    beds,
+    baths,
     regularPrice,
     discountPrice,
+    imageUrls,
     fileInputRef,
     error,
     createSuccess,
@@ -194,17 +228,15 @@ export default function useCreateListing() {
     setAddress,
     setSize,
     setSizeUnit,
-    type,
     setType,
-    parkingSpot,
     setParkingSpot,
     setFurnished,
-    offer,
     setOffer,
     setBeds,
     setBaths,
     setRegularPrice,
     setDiscountPrice,
+    setImageUrls,
     chooseFiles,
     files,
     handleRemoveFileButtonClick,
@@ -212,5 +244,6 @@ export default function useCreateListing() {
     handleDiscountPriceChange,
     regularPriceWithSuffix,
     discountPriceWithSuffix,
+    onDragEnd,
   };
 }

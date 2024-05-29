@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
 import { suffixFormater } from "../utils/listing.utils";
 import { MdEdit } from "react-icons/md";
 import { Trash2 } from "react-feather";
 import Ribbon from "../interface/Ribbon";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSelectedListing } from "../redux/slices/selectedListing.slice.js";
 
 export default function ListingCard(props) {
   const { listing } = props;
   const [imageLoadingStates, setImageLoadingStates] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formatPrice = () => {
     return suffixFormater(listing.regularPrice);
+  };
+
+  const handleEditClick = () => {
+    dispatch(setSelectedListing(listing));
+    navigate("/edit-listing");
   };
 
   return (
@@ -76,7 +86,10 @@ export default function ListingCard(props) {
             </p>
           </div>
           <div className="flex gap-1 justify-end">
-            <span className="flex gap-1 cursor-pointer ">
+            <span
+              className="flex gap-1 cursor-pointer"
+              onClick={handleEditClick}
+            >
               <MdEdit className="w-6 h-6 mx-1" />
               edit
             </span>

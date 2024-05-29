@@ -2,13 +2,26 @@ import { Image, Plus } from "react-feather";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingOverlay from "../interface/LoadingOverlay";
-import useCreateListing from "../hooks/createListing.hooks";
+import useEditListing from "../hooks/editListing.hooks";
+import ListingImagesList from "../components/ListingImagesList";
 
-export default function CreateListing() {
+export default function EditListing() {
   const { loading } = useSelector((state) => state.loading);
   const {
+    name,
+    description,
+    address,
+    size,
+    sizeUnit,
+    type,
+    parkingSpot,
+    furnished,
+    offer,
+    beds,
+    baths,
     regularPrice,
     discountPrice,
+    imageUrls,
     fileInputRef,
     error,
     createSuccess,
@@ -18,15 +31,15 @@ export default function CreateListing() {
     setAddress,
     setSize,
     setSizeUnit,
-    type,
     setType,
-    parkingSpot,
     setParkingSpot,
     setFurnished,
-    offer,
     setOffer,
     setBeds,
     setBaths,
+    setRegularPrice,
+    setDiscountPrice,
+    setImageUrls,
     chooseFiles,
     files,
     handleRemoveFileButtonClick,
@@ -34,25 +47,26 @@ export default function CreateListing() {
     handleDiscountPriceChange,
     regularPriceWithSuffix,
     discountPriceWithSuffix,
-  } = useCreateListing();
+    onDragEnd,
+  } = useEditListing();
 
   return (
     <>
       {loading && <LoadingOverlay />}
       <main className="p-8 max-w-6xl mx-auto">
-        <h1 className="text-4xl text-center mt-5 mb-10">Create Listing</h1>
+        <h1 className="text-4xl text-center mt-5 mb-10">Edit Listing</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
         {createSuccess && (
           <p className="text-green-500 text-center">
             <Link to={"/listing"} className="text-blue-500 hover:underline">
               listing
             </Link>{" "}
-            created successfully
+            edited successfully
           </p>
         )}
         <form onSubmit={handleCreate}>
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="md:w-5/6">
+          <div className="flex flex-col gap-6">
+            <div className="">
               <div className="flex flex-col mt-2">
                 <label htmlFor="name" className="text-xl">
                   Name
@@ -65,6 +79,7 @@ export default function CreateListing() {
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
+                  value={name}
                   placeholder="name"
                   minLength={12}
                   maxLength={62}
@@ -83,6 +98,7 @@ export default function CreateListing() {
                   onChange={(e) => {
                     setDescription(e.target.value);
                   }}
+                  value={description}
                   minLength={12}
                   maxLength={200}
                   required
@@ -100,6 +116,7 @@ export default function CreateListing() {
                   onChange={(e) => {
                     setAddress(e.target.value);
                   }}
+                  value={address}
                   placeholder="address"
                   minLength={12}
                   maxLength={62}
@@ -120,7 +137,7 @@ export default function CreateListing() {
                   }}
                   className="bg-slate-100 border p-3 my-2 rounded-md focus:outline-none focus:bg-white focus:border-slate-300"
                   min={1}
-                  defaultValue={1}
+                  value={size}
                   required
                 />
                 <select
@@ -129,6 +146,7 @@ export default function CreateListing() {
                   }}
                   name="sizeUnit"
                   id="sizeUnit"
+                  value={sizeUnit}
                 >
                   <option value="marla">Marla</option>
                   <option value="kanal">Kanal</option>
@@ -165,6 +183,7 @@ export default function CreateListing() {
                     name="parking_spot"
                     id="parking_spot"
                     className="w-4"
+                    checked={parkingSpot}
                     onChange={(e) => {
                       setParkingSpot(!parkingSpot);
                     }}
@@ -177,6 +196,7 @@ export default function CreateListing() {
                     name="furnished"
                     id="furnished"
                     className="w-4"
+                    checked={furnished}
                     onChange={() => {
                       setFurnished(!furnished);
                     }}
@@ -189,6 +209,7 @@ export default function CreateListing() {
                     name="offer"
                     id="offer"
                     className="w-4"
+                    checked={offer}
                     onChange={() => {
                       setOffer(!offer);
                     }}
@@ -203,7 +224,7 @@ export default function CreateListing() {
                     type="number"
                     name="beds"
                     id="beds"
-                    defaultValue={1}
+                    value={beds}
                     min={1}
                     max={15}
                     onChange={(e) => {
@@ -221,7 +242,7 @@ export default function CreateListing() {
                     type="number"
                     name="baths"
                     id="baths"
-                    defaultValue={1}
+                    value={baths}
                     min={1}
                     max={15}
                     onChange={(e) => {
@@ -275,63 +296,72 @@ export default function CreateListing() {
                 )}
               </div>
             </div>
-            <div>
-              <span className="font-semibold">Images:</span> The first image
-              will be the cover <span className="text-blue-500">(max 6)</span>
-              <input
-                type="file"
-                name="images"
-                id="images"
-                ref={fileInputRef}
-                onChange={chooseFiles}
-                accept="image/*"
-                hidden
-                multiple
-              />
-              <div
-                className="border w-full my-5 p-3 flex gap-2 cursor-pointer"
-                onClick={() => fileInputRef.current.click()}
-              >
-                <Image className="w-6 h-6" />
-                {files && files.length > 0 ? `${files.length} ` : `no `}file
-                chosen
-              </div>
-              <div className="flex flex-wrap">
-                {files && files.length > 0 && (
-                  <>
-                    <p>Preview</p>
-                    <div className="flex flex-col w-full">
-                      {files.map((file, index) => (
-                        <div className="flex justify-between">
-                          <img
-                            key={index}
-                            src={URL.createObjectURL(file)}
-                            alt={`Image ${index}`}
-                            className="my-2 w-32 h-32 object-cover"
-                          />
-                          <button
-                            type="button"
-                            className="text-red-500"
-                            onClick={handleRemoveFileButtonClick}
-                          >
-                            remove
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  className="bg-green-600 text-lg text-white px-5 py-2 rounded-md hover:bg-green-800 transition duration-200 focus:outline-none focus:ring focus:ring-green-400 flex items-center"
+            {imageUrls.length < 6 && (
+              <div>
+                <span className="font-semibold">Images:</span> The first image
+                will be the cover{" "}
+                <span className="text-blue-500">
+                  (max {6 - imageUrls.length})
+                </span>
+                <input
+                  type="file"
+                  name="images"
+                  id="images"
+                  ref={fileInputRef}
+                  onChange={chooseFiles}
+                  accept="image/*"
+                  hidden
+                  multiple
+                />
+                <div
+                  className="border w-full my-5 p-3 flex gap-2 cursor-pointer"
+                  onClick={() => fileInputRef.current.click()}
                 >
-                  create
-                  <Plus color="white" />
-                </button>
+                  <Image className="w-6 h-6" />
+                  {files && files.length > 0 ? `${files.length} ` : `no `}file
+                  chosen
+                </div>
+                <div className="flex flex-wrap">
+                  {files && files.length > 0 && (
+                    <>
+                      <p>Preview</p>
+                      <div className="flex flex-col w-full">
+                        {files.map((file, index) => (
+                          <div className="flex justify-between">
+                            <img
+                              key={index}
+                              src={URL.createObjectURL(file)}
+                              alt={`Image ${index}`}
+                              className="my-2 w-32 h-32 object-cover"
+                            />
+                            <button
+                              type="button"
+                              className="text-red-500"
+                              onClick={handleRemoveFileButtonClick}
+                            >
+                              remove
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+          <div>
+            <p className="font-semibold mt-5 text-lg">Uploaded Images</p>
+            <ListingImagesList imageUrls={imageUrls} onDragEnd={onDragEnd} />
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-green-600 text-lg text-white px-5 py-2 rounded-md hover:bg-green-800 transition duration-200 focus:outline-none focus:ring focus:ring-green-400 flex items-center"
+            >
+              edit
+              <Plus color="white" />
+            </button>
           </div>
         </form>
       </main>

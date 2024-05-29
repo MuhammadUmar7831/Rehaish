@@ -3,6 +3,7 @@ import { RiSearchLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Avatar from "./Avatar";
 import MenuOverlay from "./MenuOverlay";
+import HamburgerSvg from "../interface/HamburgerSvg";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
@@ -16,9 +17,7 @@ export default function Header() {
         </Link>
 
         {/* Search bar*/}
-        <form
-          className={`hidden md:flex lg:w-1/4 px-4 relative`}
-        >
+        <form className={`hidden md:flex lg:w-1/4 px-4 relative`}>
           <input
             type="text"
             placeholder="Search..."
@@ -40,37 +39,26 @@ export default function Header() {
           <Link to="/about" className="px-3 py-2 hover:bg-slate-300 rounded-md">
             About
           </Link>
-          {/* Account icon */}
+          <Link
+            to="/create-listing"
+            className="px-3 py-2 hover:bg-slate-300 rounded-md"
+          >
+            Create Listing
+          </Link>
+          <Link
+            to="/listing"
+            className="px-3 py-2 hover:bg-slate-300 rounded-md"
+          >
+            My Listing
+          </Link>
           <Avatar />
         </div>
 
-        {/* Hamburger menu button for mobile */}
+        {/* Hanburger & Avatar */}
         <div className="flex lg:hidden">
           <Avatar />
           <button onClick={() => setShowMenu(!showMenu)}>
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {showMenu ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              )}
-            </svg>
+            <HamburgerSvg />
           </button>
           {showMenu && (
             <MenuOverlay
