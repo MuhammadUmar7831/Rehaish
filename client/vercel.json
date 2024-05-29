@@ -2,7 +2,7 @@
     "rewrites": [
         {
             "source": "/api/(.*)",
-            "destination": "http://localhost:3000/$1"
+            "destination": "https://rehaish-api/$1"
         },
         {
             "source": "/(.*)",
