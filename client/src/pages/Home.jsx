@@ -1,7 +1,12 @@
-import React from 'react'
+import React from "react";
+import Hero from "../interface/Hero";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <>
+      <Hero />
+    </>
+  );
+};
+
+export default Home;
