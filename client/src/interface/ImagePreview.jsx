@@ -11,7 +11,7 @@ export default function ImagePreview(props) {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-80 cursor-default"
+      className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-10 bg-black bg-opacity-80 cursor-default"
       onClick={onClose}
     >
       {imageLoading && (

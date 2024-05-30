@@ -32,7 +32,7 @@ export default function Header() {
         </form>
 
         {/* Links */}
-        <div className={`lg:flex items-center ${showMenu ? "flex" : "hidden"}`}>
+        <div className={`lg:flex items-center hidden`}>
           <Link to="/" className="px-3 py-2 hover:bg-slate-300 rounded-md">
             Home
           </Link>
@@ -60,14 +60,16 @@ export default function Header() {
           <button onClick={() => setShowMenu(!showMenu)}>
             <HamburgerSvg />
           </button>
-          {showMenu && (
-            <MenuOverlay
-              onClose={() => {
-                setShowMenu(!showMenu);
-              }}
-            />
-          )}
         </div>
+
+        {showMenu && (
+          <MenuOverlay
+          className="w-full h-full"
+            onClose={() => {
+              setShowMenu(!showMenu);
+            }}
+          />
+        )}
       </div>
     </header>
   );

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import useProfile from "../hooks/profile.hooks";
 import LoadingOverlay from "../interface/LoadingOverlay";
 import PopupModal from "../interface/PopupModal";
-import { Link } from "react-router-dom";
+import ImagePreview from "../interface/ImagePreview";
 
 export default function Profile() {
   const { user } = useSelector((state) => state.user);
@@ -27,6 +27,8 @@ export default function Profile() {
     signoutModalOpen,
     setSignoutModalOpen,
     signout,
+    previewProfilePicture,
+    setPreviewProfilePicture,
   } = useProfile();
 
   const handleKeyPress = (e) => {
@@ -62,6 +64,15 @@ export default function Profile() {
         }}
         message={"Are you sure you want to signout?"}
       />
+      {/* profile picture preview */}
+      {previewProfilePicture && (
+        <ImagePreview
+          url={imageUrl}
+          onClose={() => {
+            setPreviewProfilePicture(false);
+          }}
+        />
+      )}
       <div className="flex items-center justify-center">
         <div className="bg-gray-100 shadow-lg rounded-lg w-full max-w-3xl mx-10 my-10 relative">
           <div className="p-8">
@@ -75,6 +86,9 @@ export default function Profile() {
                   accept="image/*"
                 />
                 <img
+                  onClick={() => {
+                    setPreviewProfilePicture(true);
+                  }}
                   src={imageUrl}
                   alt="Profile"
                   className="rounded-full w-32 h-32 shadow-md border-4 border-white transition duration-200 transform hover:opacity-90 cursor-pointer"

@@ -22,6 +22,7 @@ export default function useProfile() {
   const [error, setError] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [signoutModalOpen, setSignoutModalOpen] = useState(false);
+  const [previewProfilePicture, setPreviewProfilePicture] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -131,5 +132,7 @@ export default function useProfile() {
     signoutModalOpen,
     setSignoutModalOpen,
     signout,
+    previewProfilePicture,
+    setPreviewProfilePicture,
   };
 }
