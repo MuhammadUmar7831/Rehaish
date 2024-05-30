@@ -1,4 +1,4 @@
-import { Image, Plus } from "react-feather";
+import { Image, Edit } from "react-feather";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingOverlay from "../interface/LoadingOverlay";
@@ -25,7 +25,7 @@ export default function EditListing() {
     fileInputRef,
     error,
     createSuccess,
-    handleCreate,
+    handleEdit,
     setName,
     setDescription,
     setAddress,
@@ -48,6 +48,7 @@ export default function EditListing() {
     regularPriceWithSuffix,
     discountPriceWithSuffix,
     onDragEnd,
+    deleteImageFromFireBaseStorage,
   } = useEditListing();
 
   return (
@@ -64,7 +65,7 @@ export default function EditListing() {
             edited successfully
           </p>
         )}
-        <form onSubmit={handleCreate}>
+        <form onSubmit={handleEdit}>
           <div className="flex flex-col gap-6">
             <div className="">
               <div className="flex flex-col mt-2">
@@ -298,8 +299,8 @@ export default function EditListing() {
             </div>
             {imageUrls.length < 6 && (
               <div>
-                <span className="font-semibold">Images:</span> The first image
-                will be the cover{" "}
+                <span className="font-semibold">Images:</span> upload images
+                here {" "}
                 <span className="text-blue-500">
                   (max {6 - imageUrls.length})
                 </span>
@@ -352,15 +353,20 @@ export default function EditListing() {
           </div>
           <div>
             <p className="font-semibold mt-5 text-lg">Uploaded Images</p>
-            <ListingImagesList imageUrls={imageUrls} onDragEnd={onDragEnd} />
+            <span className="my-2">The first image will be the cover image. Drag the images to change the order</span>
+            <ListingImagesList
+              imageUrls={imageUrls}
+              onDragEnd={onDragEnd}
+              deleteImage={deleteImageFromFireBaseStorage}
+            />
           </div>
           <div className="flex justify-end">
             <button
               type="submit"
-              className="bg-green-600 text-lg text-white px-5 py-2 rounded-md hover:bg-green-800 transition duration-200 focus:outline-none focus:ring focus:ring-green-400 flex items-center"
+              className="bg-green-600 text-lg text-white px-5 py-2 my-2 rounded-md hover:bg-green-800 transition duration-200 focus:outline-none focus:ring focus:ring-green-400 flex items-center"
             >
-              edit
-              <Plus color="white" />
+              update
+              <Edit color="white" size={20} className="mx-2"/>
             </button>
           </div>
         </form>

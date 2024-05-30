@@ -8,7 +8,7 @@ import {
 } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../redux/slices/loading.slice";
-import { createListingApi } from "../api/createListing.api";
+import { createListingApi } from "../api/lisiting.api";
 import { suffixFormater } from "../utils/listing.utils";
 
 export default function useCreateListing() {

@@ -16,6 +16,21 @@ export const createListing = async (req, res, next) => {
   }
 };
 
+export const editUserListing = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    const validUser = await User.findById(userId);
+    if (validUser === null) {
+      return next(errorHandler(404, "user not found!"));
+    }
+    const listing = req.body;
+    const updatedListingResult = await Listing.findByIdAndUpdate(listing._id,listing);
+    return res.status(201).send({ success: true, updatedListingResult });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getUserListing = async (req, res, next) => {
   try {
     const userId = req.userId;
@@ -24,8 +39,8 @@ export const getUserListing = async (req, res, next) => {
       return next(errorHandler(404, "user not found!"));
     }
     const listing = await Listing.find({ userRef: userId });
-    if (listing.length === 0){
-      return next(errorHandler(404, 'no listing found'));
+    if (listing.length === 0) {
+      return next(errorHandler(404, "no listing found"));
     }
     return res.status(201).send({ success: true, listing });
   } catch (error) {

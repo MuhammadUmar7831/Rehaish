@@ -1,19 +1,19 @@
 import { useRef, useState } from "react";
 import { app } from "../firebase/OAuthApi";
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../redux/slices/loading.slice";
-import { createListingApi } from "../api/createListing.api";
 import { suffixFormater } from "../utils/listing.utils";
+import { editListingApi } from "../api/lisiting.api";
+import { setLoading } from "../redux/slices/loading.slice";
 
 export default function useEditListing() {
   const { selectedListing } = useSelector((state) => state.selectedListing);
-
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(false);
   const [type, setType] = useState(selectedListing.type);
@@ -46,6 +46,7 @@ export default function useEditListing() {
   );
 
   const fileInputRef = useRef(null);
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const checkFilesType = (files) => {
@@ -61,6 +62,30 @@ export default function useEditListing() {
     const updatedFiles = [...files];
     updatedFiles.splice(index, 1);
     return updatedFiles;
+  };
+
+  const deleteImageFromFireBaseStorage = async (indexToDelete) => {
+    try {
+      dispatch(setLoading(true));
+
+      const storage = getStorage(app);
+      const storagePath = imageUrls[indexToDelete].replace(
+        "gs://" + storage.bucket + "/",
+        ""
+      );
+      const imageRef = ref(storage, storagePath);
+
+      await deleteObject(imageRef);
+
+      const updatedImageUrls = Array.from(imageUrls);
+      updatedImageUrls.splice(indexToDelete, 1);
+      setImageUrls(updatedImageUrls);
+
+      setError(false);
+    } catch (error) {
+      setError(error.message);
+    }
+    dispatch(setLoading(false));
   };
 
   const handleRemoveFileButtonClick = async (index) => {
@@ -80,11 +105,14 @@ export default function useEditListing() {
     }
 
     const selectedFiles = [...files, ...Array.from(temp)];
-    if (selectedFiles.length > 0 && selectedFiles.length < 6 - imageUrls.length) {
+    if (
+      selectedFiles.length > 0 &&
+      selectedFiles.length < 6 - imageUrls.length
+    ) {
       setFiles(selectedFiles);
       setError(false);
     } else {
-      console.log(selectedFiles.length > 6 - imageUrls.length)
+      console.log(selectedFiles.length > 6 - imageUrls.length);
       if (selectedFiles.length === 0) {
         fileInputRef.current.value = "";
         setError("Please choose at least one file.");
@@ -96,7 +124,7 @@ export default function useEditListing() {
   };
 
   const validateInputs = () => {
-    if (files.length === 0) {
+    if (imageUrls.length + files.length === 0) {
       setError("please choose at least one files");
       return false;
     }
@@ -126,7 +154,7 @@ export default function useEditListing() {
 
   const handleFileUpload = async () => {
     try {
-      const urls = [];
+      const urls = [...imageUrls];
       for (let i = 0; i < files.length; i++) {
         const url = await handleSingleFileUpload(files[i]);
         urls.push(url);
@@ -143,7 +171,7 @@ export default function useEditListing() {
     }
   };
 
-  const handleCreate = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     const isValidInputs = validateInputs();
     dispatch(setLoading(true));
@@ -155,6 +183,7 @@ export default function useEditListing() {
       } else {
         setCreateSuccess(true);
         const formData = {
+          _id: selectedListing._id,
           name: name,
           description: description,
           address: address,
@@ -170,7 +199,7 @@ export default function useEditListing() {
           imageUrls: urls,
           userRef: user._id,
         };
-        const res = await createListingApi(formData);
+        const res = await editListingApi(formData);
         if (res.success) {
           setError(res.message);
         }
@@ -222,7 +251,7 @@ export default function useEditListing() {
     fileInputRef,
     error,
     createSuccess,
-    handleCreate,
+    handleEdit,
     setName,
     setDescription,
     setAddress,
@@ -245,5 +274,6 @@ export default function useEditListing() {
     regularPriceWithSuffix,
     discountPriceWithSuffix,
     onDragEnd,
+    deleteImageFromFireBaseStorage,
   };
 }

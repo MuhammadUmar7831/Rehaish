@@ -3,12 +3,13 @@ import ImagePreview from "../interface/ImagePreview";
 import { useState } from "react";
 
 export default function ListingImagesList(props) {
-  const { imageUrls, onDragEnd } = props;
+  const { imageUrls, onDragEnd, deleteImage } = props;
   const [previewImageUrl, setPreviewImageUrl] = useState(null);
+
   const handlePreviewClick = (url) => {
-    console.log(previewImageUrl !== null);
     setPreviewImageUrl(url);
   };
+
   return (
     <>
       {previewImageUrl !== null && (
@@ -38,11 +39,11 @@ export default function ListingImagesList(props) {
                         alt={`Image ${index}`}
                         className="my-2 w-32 h-20 object-cover"
                       />
-                      <div>
+                      <div className="flex justify-center">
                         <button
                           type="button"
                           className="text-red-500 mx-2"
-                          // onClick={handleRemoveFileButtonClick}
+                          onClick={()=>{deleteImage(index)}}
                         >
                           delete
                         </button>
