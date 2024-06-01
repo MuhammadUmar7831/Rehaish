@@ -198,6 +198,7 @@ export default function useCreateListing() {
     setType,
     parkingSpot,
     setParkingSpot,
+    furnished,
     setFurnished,
     offer,
     setOffer,

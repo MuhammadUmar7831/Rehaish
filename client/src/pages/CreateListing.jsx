@@ -22,6 +22,7 @@ export default function CreateListing() {
     setType,
     parkingSpot,
     setParkingSpot,
+    furnished,
     setFurnished,
     offer,
     setOffer,
