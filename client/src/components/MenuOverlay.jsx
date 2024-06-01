@@ -22,7 +22,7 @@ export default function MenuOverlay(props) {
         <Link onClick={onClose} to="/create-listing">
           Create Listing
         </Link>
-        <Link onClick={onClose} to="/listing">
+        <Link onClick={onClose} to="/my-listing">
           My Listings
         </Link>
       </div>

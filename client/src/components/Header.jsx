@@ -46,7 +46,7 @@ export default function Header() {
             Create Listing
           </Link>
           <Link
-            to="/listing"
+            to="/my-listing"
             className="px-3 py-2 hover:bg-slate-300 rounded-md"
           >
             My Listing
