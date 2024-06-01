@@ -40,6 +40,10 @@ const Avatar = () => {
         src={user.avatar}
         alt="Avatar"
         className="rounded-full w-10 h-10 cursor-pointer"
+        style={{
+          backgroundImage: 'url("/images/male.jpg")',
+          backgroundSize: "cover",
+        }}
         onClick={toggleMenu}
       />
       {showMenu && (

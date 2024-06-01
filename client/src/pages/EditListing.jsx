@@ -59,7 +59,7 @@ export default function EditListing() {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {createSuccess && (
           <p className="text-green-500 text-center">
-            <Link to={"/listing"} className="text-blue-500 hover:underline">
+            <Link to={"/my-listing"} className="text-blue-500 hover:underline">
               listing
             </Link>{" "}
             edited successfully

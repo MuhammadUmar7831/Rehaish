@@ -1,8 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
 import { suffixFormater } from "../utils/myListing.utils.js";
 import { MdEdit } from "react-icons/md";
 import { Trash2 } from "react-feather";
+import { GrView } from "react-icons/gr";
 import Ribbon from "../interface/Ribbon.jsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -42,7 +43,12 @@ export default function MyListingCard(props) {
             className="w-full h-48 object-cover"
             onLoad={() => setImageLoadingStates(false)}
           />
-          {listing.offer && <Ribbon text={"Offer"}/>}
+          <Link to={`/listing/${listing._id}`}>
+            <div className="bg-white px-4 py-2 cursor-pointer absolute top-2 left-2">
+              <GrView />
+            </div>
+          </Link>
+          {listing.offer && <Ribbon text={"Offer"} />}
         </div>
         <div className="p-4">
           <h2 className="text-xl font-semibold">{listing.name}</h2>
@@ -56,13 +62,15 @@ export default function MyListingCard(props) {
                 {listing.offer && `Regular`} Price:
               </span>{" "}
               <span className={listing.offer ? `line-through` : ``}>
-                {formatPrice(listing.regularPrice)} {listing.type === "sell" ? "" : "/ month"}
+                {formatPrice(listing.regularPrice)}{" "}
+                {listing.type === "sell" ? "" : "/ month"}
               </span>
             </p>
             {listing.offer && (
               <p>
                 <span className="font-semibold">Discount Price:</span>{" "}
-                {formatPrice(listing.discountPrice)} {listing.type === "sell" ? "" : "/ month"}
+                {formatPrice(listing.discountPrice)}{" "}
+                {listing.type === "sell" ? "" : "/ month"}
               </p>
             )}
             <p>

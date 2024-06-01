@@ -107,12 +107,11 @@ export default function useEditListing() {
     const selectedFiles = [...files, ...Array.from(temp)];
     if (
       selectedFiles.length > 0 &&
-      selectedFiles.length < 6 - imageUrls.length
+      selectedFiles.length <= 6 - imageUrls.length
     ) {
       setFiles(selectedFiles);
       setError(false);
     } else {
-      console.log(selectedFiles.length > 6 - imageUrls.length);
       if (selectedFiles.length === 0) {
         fileInputRef.current.value = "";
         setError("Please choose at least one file.");
