@@ -28,7 +28,7 @@ export default function Listing() {
           {listing && (
             <>
               <ImageSwiper imageUrls={listing.imageUrls} />
-              <div className="relative overflow-hidden flex gap-4 flex-col mx-auto my-10 w-2/3 bg-zinc-100 rounded-2xl p-4">
+              <div className="relative overflow-hidden flex gap-4 flex-col mx-auto my-10 w-11/12 lg:w-2/3 max-w-fit bg-zinc-100 rounded-2xl p-4">
                 <Ribbon
                   text={listing.type === "sell" ? "for sale" : "for rent"}
                 />
