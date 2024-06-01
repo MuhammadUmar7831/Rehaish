@@ -33,7 +33,7 @@ export default function Listing() {
                   text={listing.type === "sell" ? "for sale" : "for rent"}
                 />
                 <h1 className="text-4xl font-semibold">{listing.name}</h1>
-                <OfferBadge />
+                {listing.offer && <OfferBadge />}
                 <p className="flex gap-3">
                   <MapPin /> <span>{listing.address}</span>
                 </p>
@@ -46,7 +46,7 @@ export default function Listing() {
                   <PriceTag price={listing.discountPrice} type={listing.type} />
                 )}
                 <p>{listing.description}</p>
-                <div className="flex gap-2 text-3xl">
+                <div className="flex flex-wrap gap-2 text-3xl">
                   <p className="flex">
                     <IoBedOutline />{" "}
                     <span className="text-base mx-2">{listing.beds} beds</span>
