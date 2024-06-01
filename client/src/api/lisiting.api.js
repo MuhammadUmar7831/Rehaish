@@ -29,7 +29,19 @@ export const createListingApi = async (formaData) => {
 export const editListingApi = async (formaData) => {
   try {
     const response = await axios.put("/api/listing/edit", formaData);
-    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (error.response.data === "") {
+      return { success: false, message: "server is down" };
+    } else {
+      return error.response.data;
+    }
+  }
+};
+
+export const getListinByListingId = async (listingId) => {
+  try {
+    const response = await axios.get(`/api/listing/get/${listingId}`);
     return response.data;
   } catch (error) {
     if (error.response.data === "") {

@@ -42,7 +42,7 @@ export default function MyListingCard(props) {
             className="w-full h-48 object-cover"
             onLoad={() => setImageLoadingStates(false)}
           />
-          {listing.offer && <Ribbon />}
+          {listing.offer && <Ribbon text={"Offer"}/>}
         </div>
         <div className="p-4">
           <h2 className="text-xl font-semibold">{listing.name}</h2>
