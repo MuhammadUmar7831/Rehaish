@@ -3,7 +3,7 @@ import { getUserListingApi } from "../api/lisiting.api";
 import { useDispatch } from "react-redux";
 import { setLoading } from "../redux/slices/loading.slice";
 
-export default function useListings() {
+export default function useMyListings() {
   const dispatch = useDispatch();
 
   const [error, setError] = useState("");

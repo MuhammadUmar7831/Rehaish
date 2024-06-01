@@ -13,7 +13,7 @@ import { getUserApi } from "./api/user.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/user.slice";
 import CreateListing from "./pages/CreateListing";
-import Listings from "./pages/Listings";
+import MyListings from "./pages/MyListings";
 import EditListing from "./pages/EditListing";
 
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/listing" element={<Listings />} />
+            <Route path="/listing" element={<MyListings />} />
             <Route path="/create-listing" element={<CreateListing />} />
             <Route path="/edit-listing" element={<EditListing />}></Route>
           </Route>

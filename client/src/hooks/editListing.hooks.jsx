@@ -8,7 +8,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
-import { suffixFormater } from "../utils/listing.utils";
+import { suffixFormater } from "../utils/myListing.utils";
 import { editListingApi } from "../api/lisiting.api";
 import { setLoading } from "../redux/slices/loading.slice";
 

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import useListings from "../hooks/listings.hook";
+import useListings from "../hooks/myListings.hook";
 import LoadingOverlay from "../interface/LoadingOverlay";
-import ListingCard from "../components/ListingCard";
+import MyListingCard from "../components/MyListingCard";
 import { useSelector } from "react-redux";
 
-function Listing() {
+function MyListing() {
   const { error, listings, getUserListing } =
     useListings();
 
@@ -20,11 +20,11 @@ function Listing() {
       {error && <p className="text-center text-red-500">{error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {listings.map((listing) => (
-          <ListingCard listing={listing} key={listing._id} />
+          <MyListingCard listing={listing} key={listing._id} />
         ))}
       </div>
     </div>
   );
 }
 
-export default Listing;
+export default MyListing;

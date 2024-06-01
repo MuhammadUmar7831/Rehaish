@@ -1,21 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { BounceLoader } from "react-spinners";
-import { suffixFormater } from "../utils/listing.utils";
+import { suffixFormater } from "../utils/myListing.utils.js";
 import { MdEdit } from "react-icons/md";
 import { Trash2 } from "react-feather";
-import Ribbon from "../interface/Ribbon";
+import Ribbon from "../interface/Ribbon.jsx";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectedListing } from "../redux/slices/selectedListing.slice.js";
 
-export default function ListingCard(props) {
+export default function MyListingCard(props) {
   const { listing } = props;
   const [imageLoadingStates, setImageLoadingStates] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const formatPrice = () => {
-    return suffixFormater(listing.regularPrice);
+  const formatPrice = (price) => {
+    const _price = price;
+    return suffixFormater(_price);
   };
 
   const handleEditClick = () => {
@@ -55,13 +56,13 @@ export default function ListingCard(props) {
                 {listing.offer && `Regular`} Price:
               </span>{" "}
               <span className={listing.offer ? `line-through` : ``}>
-                {formatPrice()} {listing.type === "sell" ? "" : "/ month"}
+                {formatPrice(listing.regularPrice)} {listing.type === "sell" ? "" : "/ month"}
               </span>
             </p>
             {listing.offer && (
               <p>
                 <span className="font-semibold">Discount Price:</span>{" "}
-                {formatPrice()} {listing.type === "sell" ? "" : "/ month"}
+                {formatPrice(listing.discountPrice)} {listing.type === "sell" ? "" : "/ month"}
               </p>
             )}
             <p>

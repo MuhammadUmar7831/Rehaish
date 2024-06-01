@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../redux/slices/loading.slice";
 import { createListingApi } from "../api/lisiting.api";
-import { suffixFormater } from "../utils/listing.utils";
+import { suffixFormater } from "../utils/myListing.utils";
 
 export default function useCreateListing() {
   const [files, setFiles] = useState([]);
